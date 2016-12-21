@@ -23,6 +23,10 @@
 typedef enum {
 	e_DEV_3GPP = 0,
 	e_DEV_TX500 = 1,
+	e_DEV_TX501_BASE = 2,
+	e_DEV_TX501S = e_DEV_TX501_BASE,
+	e_DEV_TX501K = e_DEV_TX501_BASE,
+	e_DEV_TX501L = e_DEV_TX501_BASE,
 	// TODO...
 	e_DEV_MAX,
 } AT_DEV_TYPE;

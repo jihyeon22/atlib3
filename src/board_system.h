@@ -1,3 +1,5 @@
 #pragma once
 
-#include "board_tx500.h"
+#ifdef BOARD_TX501S
+#include "board_tx501.h" // use tx501 base 
+#endif

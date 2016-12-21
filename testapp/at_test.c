@@ -62,7 +62,7 @@ void main(int argc, char *argv[])
 	}
 	else {
 		printf("at_open call()\n");
-		ret = at_open(e_DEV_TX500, noti_proc, sms_proc, "console");
+		ret = at_open(e_DEV_TX501_BASE, noti_proc, sms_proc, "console");
 		printf("at_open ret[%d]\n", ret);
 	}
 

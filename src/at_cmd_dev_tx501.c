@@ -15,7 +15,7 @@
 
 
 // function init
-int dev_table_init_tx500 (AT_FUNC_T* p_func_table)
+int dev_table_init_tx501 (AT_FUNC_T* p_func_table)
 {
 
 	ATLOGD("%s ++\r\n", __func__);

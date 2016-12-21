@@ -27,10 +27,10 @@ int at_func_init(AT_DEV_TYPE dev,void (*p_noti_proc)(const char* buffer, int len
 	{
 		ATLOGT("<atd> init : dev is 3gpp\r\n");
 	}
-	else if ( dev == e_DEV_TX500 )
+	else if ( dev == e_DEV_TX501_BASE )
 	{
 		ATLOGT("<atd> init : dev is tx500\r\n");
-		dev_table_init_tx500 (&g_at_func_table);
+		dev_table_init_tx501 (&g_at_func_table);
 	}
 	else
 	{
