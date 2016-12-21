@@ -32,7 +32,7 @@ HEADERS = include/at
 
 
 LIB_SRCS  = src/at_cmd_table_wrapper.c src/at_log.c src/at_misc.c src/at_thread.c src/at_thread_poll_sms.c src/at_util.c
-LIB_SRCS += src/at_cmd_dev_tx501S.c
+LIB_SRCS += src/at_cmd_dev_tx501.c
 LIB_SRCS += src/at_parser/at_cmd_parser_3gpp.c src/at_parser/at_cmd_parser_3gpp_utils.c
 LIB_SRCS += src/watchdog.c src/client_socket_ipc.c src/server_socket_ipc.c
 LIB_OBJS = $(LIB_SRCS:.c=.o)
