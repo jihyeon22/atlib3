@@ -32,6 +32,11 @@ int at_func_init(AT_DEV_TYPE dev,void (*p_noti_proc)(const char* buffer, int len
 		ATLOGT("<atd> init : dev is tx501\r\n");
 		dev_table_init_tx501 (&g_at_func_table);
 	}
+	else if ( dev == e_DEV_TL500_BASE )
+	{
+		ATLOGT("<atd> init : dev is tl500\r\n");
+		dev_table_init_tl500 (&g_at_func_table);
+	}
 	else
 	{
 		ATLOGE("<atd> init : dev is not support\r\n");
@@ -445,6 +450,45 @@ int at_get_sms_unread(SMS_MSG_STAT_T* p_sms_msg_stat)
 	
 	return g_at_func_table.get_sms_unread(p_sms_msg_stat);
 }
+
+int at_get_adc_main_pwr(int* main_pwr_volt)
+{
+	if ((g_at_func_table.get_adc_main_pwr == NULL) || (g_at_func_table.get_adc_main_pwr == 0x00) )
+	{
+		ATLOGE("<atd> err [%s]: this cmd not support\r\n", __func__);
+		return AT_RET_CMD_NOT_SUPPORT;
+	}
+	
+	if ( main_pwr_volt == NULL )
+	{
+		ATLOGE("<atd> err [%s]: argument is not valid\r\n", __func__);
+		return AT_RET_FAIL;
+	}
+	
+	
+	return g_at_func_table.get_adc_main_pwr(main_pwr_volt);
+}
+
+int at_get_adc_internal_batt(int* internal_batt_volt)
+{
+	if ((g_at_func_table.get_adc_internal_batt == NULL) || (g_at_func_table.get_adc_internal_batt == 0x00) )
+	{
+		ATLOGE("<atd> err [%s]: this cmd not support\r\n", __func__);
+		return AT_RET_CMD_NOT_SUPPORT;
+	}
+	
+	if ( internal_batt_volt == NULL )
+	{
+		ATLOGE("<atd> err [%s]: argument is not valid\r\n", __func__);
+		return AT_RET_FAIL;
+	}
+	
+	
+	return g_at_func_table.get_adc_internal_batt(internal_batt_volt);
+}
+
+
+
 
 
 

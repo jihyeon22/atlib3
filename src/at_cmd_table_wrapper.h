@@ -43,6 +43,10 @@ typedef struct AT_FUNC
 	int (*set_qos_info)(int max_uplink, int max_downlink);
 
 	int (*get_sms_unread)(SMS_MSG_STAT_T* p_sms_msg_stat);
+
+	int (*get_adc_main_pwr)(int* main_pwr_volt);
+	int (*get_adc_internal_batt)(int* internal_batt_volt);
+
 }AT_FUNC_T;
 
 
