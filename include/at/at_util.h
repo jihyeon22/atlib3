@@ -139,22 +139,31 @@ int at_get_rssi(int* rssi);
 int at_get_netstat(AT_RET_NET_STAT* stat);
 int at_get_dbgmsg(unsigned char* result_buff, const int buff_size);
 int at_get_modemtime(time_t *out, int flag);
+
 int at_get_gps_ant(char *ant, int buf_len);
 int at_set_gps_on(int type, int bootmode);
 int at_set_gps_off(void);
 int at_get_agps_addr(char *addr, int buf_len);
 int at_set_agps_addr(const char *addr);
+
 int at_set_modem_mode(AT_MODEM_MODE op);
 int at_get_modem_mode(AT_MODEM_MODE* op);
+
 int at_reset_modem(void);
+
 int at_set_at_channel_recovery(void);
 int at_get_modem_status(char *buf);
+
 int at_set_alive(int time);
+
 int at_get_3g_qulify_profile(network_qos_info_t* qos_info);
 int at_set_3g_qulify_profile(network_qos_info_t qos_info);
 int at_get_qos_info(int* max_uplink, int* max_downlink);
 int at_set_qos_info(int max_uplink, int max_downlink);
 int at_get_sms_unread(SMS_MSG_STAT_T* p_sms_msg_stat);
+
+int at_get_adc_main_pwr(int* main_pwr_volt);	// suport only tl500
+int at_get_adc_internal_batt(int* internal_batt_volt); // not support tl500 5x500
 
 //jwrho ++
 int get_used_uart_channel_3gpp(int *uart_ch_code);

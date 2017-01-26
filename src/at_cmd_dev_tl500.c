@@ -57,9 +57,9 @@ int dev_table_init_tl500 (AT_FUNC_T* p_func_table)
 
 // #######################
 	// gps ant at cmd 
-	p_func_table->get_gps_ant = get_gps_ant_tl500;
-	p_func_table->set_gps_on = set_gps_on_tl500;
-	p_func_table->set_gps_off = set_gps_off_tl500;
+	//p_func_table->get_gps_ant = get_gps_ant_tl500;
+	//p_func_table->set_gps_on = set_gps_on_tl500;
+	//p_func_table->set_gps_off = set_gps_off_tl500;
 
 	p_func_table->get_adc_main_pwr = get_adc_main_pwr_tl500;
 // ########################
