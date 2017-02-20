@@ -68,6 +68,8 @@ int dev_table_init_tl500 (AT_FUNC_T* p_func_table)
 //	send_at_cmd("AT+CMGF=1");
 //	send_at_cmd("AT$$SPC=000000");
 
+	p_func_table->get_csq = get_csq_3gpp;
+	
 	ATLOGD("%s> send_at_cmd() call\r\n", __func__);
 	send_at_cmd("ATE1");
 

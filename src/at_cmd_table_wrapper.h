@@ -47,6 +47,7 @@ typedef struct AT_FUNC
 	int (*get_adc_main_pwr)(int* main_pwr_volt);
 	int (*get_adc_internal_batt)(int* internal_batt_volt);
 
+	int (*get_csq)(int* csq);
 }AT_FUNC_T;
 
 

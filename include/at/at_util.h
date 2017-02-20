@@ -165,6 +165,8 @@ int at_get_sms_unread(SMS_MSG_STAT_T* p_sms_msg_stat);
 int at_get_adc_main_pwr(int* main_pwr_volt);	// suport only tl500
 int at_get_adc_internal_batt(int* internal_batt_volt); // not support tl500 5x500
 
+int at_get_csq(int* csq);	// use test mode
+
 //jwrho ++
 int get_used_uart_channel_3gpp(int *uart_ch_code);
 int set_used_uart_channel_3gpp(UART_PORT_TYPE utype);

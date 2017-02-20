@@ -497,3 +497,30 @@ int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat)
 // +CMTI: "ME",0
 
 
+
+int get_csq_3gpp(int *csq)
+{
+	//char send_cmd[AT_MAX_BUFF_SIZE] ={0,};
+	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
+	
+	int phone_csq = 0;
+	ATLOGT("<atd> 3gpp [%s] start\r\n",__func__);
+	
+	if ( send_at_cmd_singleline_resp("AT+CSQ", "+CSQ:", result_buf, 5) != AT_RET_SUCCESS )
+	{
+		ATLOGE("<atd> 3gpp [%s] send CSQ fail\r\n",__func__);
+		return AT_RET_FAIL;
+	}
+	
+	if ( at_get_csq_from_csq(result_buf, &phone_csq) != AT_RET_SUCCESS )
+	{
+		ATLOGE("<atd> 3gpp [%s] csq get fail\r\n", __func__);
+		return AT_RET_FAIL;
+	}
+	
+	ATLOGT("<atd> 3gpp [%s] csq is [%d]\r\n",__func__, phone_csq);
+
+	*csq = phone_csq;
+	return AT_RET_SUCCESS;
+	
+}

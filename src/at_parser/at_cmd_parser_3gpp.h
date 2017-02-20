@@ -19,5 +19,6 @@ int set_qos_info_3gpp(int max_uplink, int max_downlink);
 
 int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat);
 
+int get_csq_3gpp(int *csq);
 
 #endif

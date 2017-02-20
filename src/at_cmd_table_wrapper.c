@@ -488,7 +488,22 @@ int at_get_adc_internal_batt(int* internal_batt_volt)
 }
 
 
-
+int at_get_csq(int* csq)
+{
+	if ((g_at_func_table.get_csq == NULL) || (g_at_func_table.get_csq == 0x00) )
+	{
+		ATLOGE("<atd> err [%s]: this cmd not support\r\n", __func__);
+		return AT_RET_CMD_NOT_SUPPORT;
+	}
+	
+	if ( csq == NULL )
+	{
+		ATLOGE("<atd> err [%s]: argument is not valid\r\n", __func__);
+		return AT_RET_FAIL;
+	}
+	
+	return g_at_func_table.get_csq(csq);
+}
 
 
 

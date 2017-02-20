@@ -294,6 +294,57 @@ int at_get_rssi_from_csq(const char* cmd, int* rssi)
     return AT_RET_SUCCESS;
 }
 
+// +CSQ: 7,99
+int at_get_csq_from_csq(const char* cmd, int* csq)
+{
+    char *tr;
+    char token_0[ ] = ":,";
+    //char token_1[ ] = "\r\n";
+    char *temp_bp = NULL;
+    
+    char *p_cmd = NULL;
+    char buffer[AT_MAX_BUFF_SIZE] = {0,};
+    char tmp[AT_MAX_BUFF_SIZE] = {0,};
+    
+    int tmp_csq = -1;
+    
+    memset(buffer, 0x00, sizeof(buffer));
+    strcpy(buffer, cmd);
+    
+    p_cmd = strstr(buffer, "+CSQ:");
+    
+    if ( p_cmd == NULL)
+        return AT_RET_FAIL;
+    
+    tr = strtok_r(p_cmd, token_0, &temp_bp);
+    if(tr == NULL) return AT_RET_FAIL;
+    
+    tr = strtok_r(NULL, token_0, &temp_bp);
+    if(tr == NULL) return AT_RET_FAIL;
+       
+	printf(" tr is [%s]\r\n", tr);
+	
+    at_get_number(tmp, tr);
+
+    tmp_csq = atoi(tmp);
+    
+    /*
+        0     113 dBm or less 
+        1     111 dBm   
+        2~30  109~52dBm (109~108dBm= rssi 2, 107~106dBm= rssi 3 ,,, 55~54dBm= rssi 29 
+                         53~52dBm= rssi 30) 
+        31    51dBm or greater   
+        99    unknown or not detectable 
+    */
+    // result change into rssi value.
+	printf(" tmp_csq is [%d]\r\n", tmp_csq);
+	
+    *csq = tmp_csq;
+    
+    return AT_RET_SUCCESS;
+}
+
+
 // +CREG: 0,1
 int at_get_netstat_from_creg(const char* cmd, int* netstat)
 {
