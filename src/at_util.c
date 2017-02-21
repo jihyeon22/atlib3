@@ -20,6 +20,7 @@
 char g_dev_path[256] = {0,};
 FILE *g_debug_file = NULL;
 
+#define CRASH_SKIP_WAIT_MIL_SEC  10
 void at_listener_open()
 {
 	g_debug_file = stderr;
@@ -196,8 +197,8 @@ int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd
 		}
 		watchdog_keepalive_id("send_at_cmd_singleline_resp");
 		ATLOGE("%s> [%s] open fail and retry.. [%d]/[%d]\r\n",__func__, g_dev_path, (AT_MAX_OPEN_RETRY_CNT-open_retry_cnt), AT_MAX_OPEN_RETRY_CNT);
-		wait_sec = (rand()%4+1);
-		sleep(wait_sec);
+		wait_sec = (rand()%CRASH_SKIP_WAIT_MIL_SEC*1000);
+		usleep(wait_sec);
 	}
 
 	if ( fd <= 0 ) {
@@ -206,7 +207,7 @@ int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd
 		return AT_RET_FAIL;
 	}
 
-	// Ä¿¸Ç??? ¸¸µç??
+	// Ä¿ï¿½ï¿½??? ï¿½ï¿½ï¿½ï¿½??
 	ATLOGD("%s> %s cmd\r\n", __func__, cmd);
 	sprintf(write_buf, "%s\r", cmd);
 
@@ -216,13 +217,13 @@ int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd
 	
 	write_cmd = 1;
 	
-	// Ä¿¸Ç??? º¸³»ƒƒ???.
+	// Ä¿ï¿½ï¿½??? ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½???.
 	while(retry++ < retry_cnt) 
 	{
 		watchdog_keepalive_id("send_at_cmd_singleline_resp");
 
 ATLOGD("%s> retry[%d/%d]\r\n", __func__, retry, retry_cnt);
-		// 1. Ä¿¸Ç??? º¸³½??
+		// 1. Ä¿ï¿½ï¿½??? ï¿½ï¿½ï¿½ï¿½??
 ATLOGD("%s> write_cmd[%d]\r\n", __func__, write_cmd);
 		if ( write_cmd )
 		{
@@ -240,7 +241,7 @@ ATLOGD("%s> write_cnt2[%d]\r\n", __func__, write_cnt2);
 		
 		write_cmd = 0;
 		
-		// 2. Ä¿¸Ç??¸®ÅÏ?k? ±îÄí±â´Ù¸´
+		// 2. Ä¿ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?k? ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½
 ATLOGD("%s> _wait_read : read_total[%d]\r\n", __func__, read_total);				
 		if( (read_cnt = _wait_read(fd, (unsigned char *)buffer+read_total, AT_MAX_BUFF_SIZE, AT_MAX_WAIT_READ_SEC)) < 0)
 		{
@@ -252,7 +253,7 @@ ATLOGD("%s> _wait_read : read_cnt[%d]\r\n", __func__, read_cnt);
 		read_total += read_cnt;
 		ATLOGD("<atd> dbg : < [%s]\r\n",buffer);
 		
-		// ¸¸¾à ERROR °ªÀÌ ???‘l¹«Á¶¢break
+		// ï¿½ï¿½ï¿½ï¿½ ERROR ï¿½ï¿½ï¿½ï¿½ ???ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½break
 		p_chk_cmd = strstr(buffer, "\r\nERROR");
 		if (p_chk_cmd != NULL)
 		{
@@ -260,8 +261,8 @@ ATLOGD("%s> _wait_read : read_cnt[%d]\r\n", __func__, read_cnt);
 			break;
 		}
 		
-		// ¸¸¾à OK °ªÀÌ ???Áö ???‘l.. ??? ???Æ?????
-		// ??¹®ÀÚbº¸³¾??? ??? OK ?????.. Ãß…Y??%???..
+		// ï¿½ï¿½ï¿½ï¿½ OK ï¿½ï¿½ï¿½ï¿½ ???ï¿½ï¿½ ???ï¿½l.. ??? ???ï¿½ï¿½?????
+		// ??ï¿½ï¿½ï¿½Úbï¿½ï¿½ï¿½ï¿½??? ??? OK ?????.. ï¿½ß…Y??%???..
 		if (strncasecmp(cmd, "AT+CMGS", 7) != 0)
 		{
 			p_chk_cmd = strstr(buffer, "\r\nOK");
