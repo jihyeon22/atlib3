@@ -20,7 +20,7 @@
 char g_dev_path[256] = {0,};
 FILE *g_debug_file = NULL;
 
-#define CRASH_SKIP_WAIT_MIL_SEC  10
+
 void at_listener_open()
 {
 	g_debug_file = stderr;
@@ -186,6 +186,8 @@ int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd
 	ATLOGD("%s> g_dev_path<%s> ++\r\n", __func__, g_dev_path);
 	create_watchdog("send_at_cmd_singleline_resp", 10);
 
+	int sleep_time_ms = 1;
+
 	while (open_retry_cnt--)
 	{
 		int wait_sec = 0;
@@ -197,7 +199,7 @@ int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd
 		}
 		watchdog_keepalive_id("send_at_cmd_singleline_resp");
 		ATLOGE("%s> [%s] open fail and retry.. [%d]/[%d]\r\n",__func__, g_dev_path, (AT_MAX_OPEN_RETRY_CNT-open_retry_cnt), AT_MAX_OPEN_RETRY_CNT);
-		wait_sec = (rand()%CRASH_SKIP_WAIT_MIL_SEC*1000);
+		wait_sec = sleep_time_ms++ * 10000;
 		usleep(wait_sec);
 	}
 
