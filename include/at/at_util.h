@@ -42,6 +42,19 @@ typedef enum {
 	e_MAX_THREAD_TYPE,
 } AT_THREAD_TYPE;
 
+typedef enum {
+	e_GPS_ON_TYPE_SET_ENV_AGPS = 0,
+	// e_GPS_ON_TYPE_AGPS, // not support
+	// e_GPS_ON_TYPE_SGPS,
+	// e_GPS_ON_TYPE_SGPS_XTRA, 
+	e_AT_GPS_ON_TYPE_MAX,
+} AT_GPS_ON_TYPE;
+
+typedef enum {
+	e_GPS_BOOT_TYPE_NULL = 0,
+	e_GPS_BOOT_TYPE_MAX,
+	// e_SET_GPS_PWR_ON, // not support
+} AT_GPS_BOOT_TYPE;
 
 typedef struct network_qos_info network_qos_info_t ;
 struct network_qos_info {
@@ -141,7 +154,7 @@ int at_get_dbgmsg(unsigned char* result_buff, const int buff_size);
 int at_get_modemtime(time_t *out, int flag);
 
 int at_get_gps_ant(char *ant, int buf_len);
-int at_set_gps_on(int type, int bootmode);
+int at_set_gps_on(AT_GPS_ON_TYPE type, AT_GPS_BOOT_TYPE bootmode);
 int at_set_gps_off(void);
 int at_get_agps_addr(char *addr, int buf_len);
 int at_set_agps_addr(const char *addr);

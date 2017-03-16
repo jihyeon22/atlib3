@@ -220,7 +220,7 @@ int at_get_gps_ant(char *ant, int buf_len)
 	return g_at_func_table.get_gps_ant(ant,buf_len);
 } 
 
-int at_set_gps_on(int type, int bootmode)
+int at_set_gps_on(AT_GPS_ON_TYPE type, AT_GPS_BOOT_TYPE bootmode)
 {
 	if ((g_at_func_table.set_gps_on == NULL) || (g_at_func_table.set_gps_on == 0x00) )
 	{
