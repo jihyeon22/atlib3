@@ -12,13 +12,22 @@
 #define ATLOGE(svc,msg...)	logd(svc,eError, msg)	// error 	: red
 #define ATLOGT(svc,msg...)	logd(svc,eTrace, msg)	// trace 	: brightmagenta
 */
-void atlogd(const char *format, ...);
 
-#define ATLOGD(msg...)	atlogd(msg)
-#define ATLOGW(msg...)	atlogd(msg)	// warning  : brown
-#define ATLOGI(msg...)	atlogd(msg)	// info  	: green
-#define ATLOGE(msg...)	atlogd(msg)	// error 	: red
-#define ATLOGT(msg...)	atlogd(msg)	// trace 	: brightmagenta
+typedef enum {
+	e_AT_LOG_LEVEL_D = 0,
+	e_AT_LOG_LEVEL_W,
+    e_AT_LOG_LEVEL_I,
+    e_AT_LOG_LEVEL_E,
+    e_AT_LOG_LEVEL_T,
+    e_AT_LOG_LEVEL_MAX,
+} AT_LOG_TYPE;
 
+void atlogd(AT_LOG_TYPE type, const char *format, ...);
+
+#define ATLOGD(msg...)	atlogd(e_AT_LOG_LEVEL_D, msg)
+#define ATLOGW(msg...)	atlogd(e_AT_LOG_LEVEL_W, msg)	// warning  : brown
+#define ATLOGI(msg...)	atlogd(e_AT_LOG_LEVEL_I, msg)	// info  	: green
+#define ATLOGE(msg...)	atlogd(e_AT_LOG_LEVEL_E, msg)	// error 	: red
+#define ATLOGT(msg...)	atlogd(e_AT_LOG_LEVEL_T, msg)	// trace 	: brightmagenta
 
 #endif

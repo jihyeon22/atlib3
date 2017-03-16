@@ -8,9 +8,10 @@
 #include <stdarg.h>
 #include <logd_rpc.h>
 
+#include <at/at_log.h>
 
 extern FILE *g_debug_file;
-void atlogd(const char *format, ...)
+void atlogd(AT_LOG_TYPE type, const char *format, ...)
 {
 	char tmp[1024] = {0};
 	
@@ -24,5 +25,39 @@ void atlogd(const char *format, ...)
 		fflush(g_debug_file);
 	}
 
-	LOGD(eSVC_AT, tmp);
+	switch (type)
+	{
+		case e_AT_LOG_LEVEL_D :
+		{
+			LOGD(eSVC_AT, tmp);
+			break;
+		}
+		case e_AT_LOG_LEVEL_W :
+		{
+			LOGW(eSVC_AT, tmp);
+			break;
+		}
+		case e_AT_LOG_LEVEL_I :
+		{
+			LOGI(eSVC_AT, tmp);
+			break;
+		}
+		case e_AT_LOG_LEVEL_E :
+		{
+			LOGE(eSVC_AT, tmp);
+			break;
+		}
+		case e_AT_LOG_LEVEL_T :
+		{
+			LOGT(eSVC_AT, tmp);
+			break;
+		}
+		default : 
+		{
+			LOGD(eSVC_AT, tmp);
+			break;
+		}
+	}
+
+	
 }
