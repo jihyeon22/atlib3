@@ -667,6 +667,94 @@ static int _cmgl_to_sms_msg_stat(const char* cmd, SMS_MSG_CONTENT_T* content)
 	
 }
 
+int at_get_apn_form_cgdcont(const char* cmd, int* attr, char* apn)
+{
+   	char result_tmp[AT_MAX_BUFF_SIZE] ={0,};
+
+	char *tr;
+    char token_0[ ] = ",";
+    char token_1[ ] = "\r\n";
+    char *temp_bp = NULL;
+    char *p_cmd = NULL;
+
+    p_cmd = cmd;
+    
+    if ( p_cmd == NULL)
+        return AT_RET_FAIL;
+    
+    tr = strtok_r(p_cmd, token_0, &temp_bp);
+    if(tr == NULL) {
+        return AT_RET_FAIL;
+    }
+    
+    // ------------------- IP TYPE ------------------------------
+    tr = strtok_r(NULL, token_0, &temp_bp);
+    if(tr == NULL) {
+        return AT_RET_FAIL;
+    }
+
+    memset(result_tmp, 0x00, AT_MAX_BUFF_SIZE);
+    at_remove_char(tr, result_tmp, AT_MAX_BUFF_SIZE, '\"');
+    
+    if ( strncmp( result_tmp, "IPV4V6", strlen("IPV4V6") ) == 0 )
+        *attr = AT_APN_IP_TYPE_IPV6;
+    else if ( strncmp( result_tmp, "IP", strlen("IP") ) == 0 ) 
+        *attr = AT_APN_IP_TYPE_IPV4;
+    else
+        *attr = AT_APN_IP_TYPE_UNKNOWN;
+
+    printf("1. ip type is = [%s],[%d]\n", result_tmp, *attr );
+    
+    // -------------------  APN ------------------------------
+    tr = strtok_r(NULL, token_0, &temp_bp);
+    if(tr == NULL) {
+        return AT_RET_FAIL;
+    }
+
+    memset(result_tmp, 0x00, AT_MAX_BUFF_SIZE);
+    at_remove_char(tr, result_tmp, AT_MAX_BUFF_SIZE, '\"');
+
+    strncpy(apn, result_tmp, strlen(result_tmp));
+
+    printf("2. apn is = [%s],[%s]\n", result_tmp, apn );
+    
+    return AT_RET_SUCCESS;
+
+}
+
+int at_set_apn_form_cgdcont(int cid, int attr, char* apn)
+{
+    int cur_apn_attr;
+    char cur_apn_addr[128] = {0,};
+
+    const char* apn_ip_type = NULL;
+    const char* apn_ip_type_str_ipv6 = "IPV4V6";
+    const char* apn_ip_type_str_ipv4 = "IP";
+
+    char setting_at_cmd_buff[AT_MAX_BUFF_SIZE] ={0,};
+    
+    if ( attr == AT_APN_IP_TYPE_IPV6 )
+        apn_ip_type = apn_ip_type_str_ipv6;
+    else if ( attr == AT_APN_IP_TYPE_IPV4 )
+        apn_ip_type = apn_ip_type_str_ipv4;
+    else
+        return AT_RET_FAIL;
+    
+    printf("%s() - get apn info ++ \r\n",__func__);
+    // check current apn addr.
+  
+    {
+        sprintf(cur_apn_addr, "at+cgdcont=%d,\"%s\",\"%s\"", cid, apn_ip_type, apn);
+        send_at_cmd(cur_apn_addr);
+    }
+
+
+    return AT_RET_SUCCESS;
+
+}
+
+
+
 int at_get_unread_sms_from_cmgl(const char* cmd, SMS_MSG_STAT_T* p_sms_msg_stat)
 {
 	int i = 0;

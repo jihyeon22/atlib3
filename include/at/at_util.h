@@ -110,6 +110,12 @@ typedef enum {
 } AT_MODEM_MODE;
 
 typedef enum {
+	AT_APN_IP_TYPE_UNKNOWN = 0,
+	AT_APN_IP_TYPE_IPV4 = 1,
+	AT_APN_IP_TYPE_IPV6 = 2,
+} AT_APN_IP_TYPE;
+
+typedef enum {
 	AT_RET_FAIL = -1,
 	AT_RET_SUCCESS = 0,
 	AT_RET_CMD_NOT_SUPPORT = 1,
@@ -173,6 +179,10 @@ int at_get_3g_qulify_profile(network_qos_info_t* qos_info);
 int at_set_3g_qulify_profile(network_qos_info_t qos_info);
 int at_get_qos_info(int* max_uplink, int* max_downlink);
 int at_set_qos_info(int max_uplink, int max_downlink);
+
+int at_set_apn_addr(int cid, int attr, const char* apn);
+int at_get_apn_addr(int cid, int* attr, char* apn);
+
 int at_get_sms_unread(SMS_MSG_STAT_T* p_sms_msg_stat);
 
 int at_get_adc_main_pwr(int* main_pwr_volt);	// suport only tl500

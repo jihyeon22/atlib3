@@ -55,6 +55,9 @@ int dev_table_init_tl500 (AT_FUNC_T* p_func_table)
 	
 	p_func_table->get_sms_unread = get_sms_unread_3gpp;
 
+	p_func_table->set_apn_addr = set_apn_info_3gpp;
+	p_func_table->get_apn_addr = get_apn_info_3gpp;
+
 // #######################
 	// gps ant at cmd 
 	//p_func_table->get_gps_ant = get_gps_ant_tl500;

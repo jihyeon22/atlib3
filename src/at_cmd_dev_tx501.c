@@ -54,6 +54,7 @@ int dev_table_init_tx501 (AT_FUNC_T* p_func_table)
 	
 	p_func_table->get_sms_unread = get_sms_unread_3gpp;
 	
+
 	// init cmd..
 //	send_at_cmd("AT+CNMI=2,1,0,0,0");
 //	send_at_cmd("AT+CMGF=1");

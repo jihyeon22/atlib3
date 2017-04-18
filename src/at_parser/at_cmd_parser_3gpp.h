@@ -17,6 +17,9 @@ int set_3g_qulify_profile_3gpp(network_qos_info_t qos_info);
 int get_qos_info_3gpp(int* max_uplink, int* max_downlink);
 int set_qos_info_3gpp(int max_uplink, int max_downlink);
 
+int get_apn_info_3gpp(int cid, int* attr, char* apn);
+int set_apn_info_3gpp(int cid, int attr, char* apn);
+
 int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat);
 
 int get_csq_3gpp(int *csq);

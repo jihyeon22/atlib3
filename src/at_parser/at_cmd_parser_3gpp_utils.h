@@ -13,6 +13,8 @@ int at_get_mode_from_cfun(const char* cmd, int* mode);
 int at_get_unread_sms_from_cmgl(const char* cmd, SMS_MSG_STAT_T* p_sms_msg_stat);
 int at_get_mode_from_cgeqreq(const char* cmd, network_qos_info_t* qos_info);
 
+int at_get_apn_form_cgdcont(const char* cmd, int* attr, char* apn);
+
 
 #endif
 

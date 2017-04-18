@@ -62,7 +62,7 @@ void main(int argc, char *argv[])
 	}
 	else {
 		printf("at_open call()\n");
-		ret = at_open(e_DEV_TX501_BASE, noti_proc, sms_proc, "console");
+		ret = at_open(e_DEV_TL500_BASE, noti_proc, sms_proc, "console");
 		printf("at_open ret[%d]\n", ret);
 	}
 
@@ -205,6 +205,35 @@ void main(int argc, char *argv[])
 	}
 	*/
 	
+	/*
+	{
+		printf("--------------------------------------------------------------------------\r\n");
+		int ip_type = 0;
+		char apn_addr[256] = {0,};
+		if ( at_get_apn_addr(0, &ip_type, apn_addr) == AT_RET_SUCCESS )
+			;
+		printf("get apn --> iptype : [%d] / apn_addr : [%s]\r\n", ip_type, apn_addr);
+	}
+*/
+	{
+		printf("--------------------------------------------------------------------------\r\n");
+		int ip_type = AT_APN_IP_TYPE_IPV4;
+		char* apn_addr = "test.apn.com";
+		if ( at_set_apn_addr(3, ip_type, apn_addr) == AT_RET_SUCCESS )
+			;
+		printf("set apn --> iptype : [%d] / apn_addr : [%s]\r\n", ip_type, apn_addr);
+	}
+
+
+	{
+		printf("--------------------------------------------------------------------------\r\n");
+		int ip_type = 0;
+		char apn_addr[256] = {0,};
+		if ( at_get_apn_addr(0, &ip_type, apn_addr) == AT_RET_SUCCESS )
+			;
+		printf("get apn --> iptype : [%d] / apn_addr : [%s]\r\n", ip_type, apn_addr);
+	}
+
 	while(1)
 	{
 		printf(".\r\n");

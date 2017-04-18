@@ -433,6 +433,44 @@ int at_set_qos_info(int max_uplink, int max_downlink)
 	return g_at_func_table.set_qos_info(max_uplink,max_downlink);
 }
 
+
+int at_set_apn_addr(int cid, int attr, const char* apn)
+{
+	if ((g_at_func_table.set_apn_addr == NULL) || (g_at_func_table.set_apn_addr == 0x00) )
+	{
+		ATLOGE("<atd> err [%s]: this cmd not support\r\n", __func__);
+		return AT_RET_CMD_NOT_SUPPORT;
+	}
+	
+	if ( ( cid < 0 ) || ( apn == NULL ) )
+	{
+		ATLOGE("<atd> err [%s]: argument is not valid\r\n", __func__);
+		return AT_RET_FAIL;
+	}
+	
+	
+	return g_at_func_table.set_apn_addr(cid,attr,apn);
+}
+
+int at_get_apn_addr(int cid, int* attr, char* apn)
+{
+	if ((g_at_func_table.get_apn_addr == NULL) || (g_at_func_table.get_apn_addr == 0x00) )
+	{
+		ATLOGE("<atd> err [%s]: this cmd not support\r\n", __func__);
+		return AT_RET_CMD_NOT_SUPPORT;
+	}
+	
+	if ( ( cid < 0 ) || ( apn == NULL ) )
+	{
+		ATLOGE("<atd> err [%s]: argument is not valid\r\n", __func__);
+		return AT_RET_FAIL;
+	}
+	
+	
+	return g_at_func_table.get_apn_addr(cid,attr,apn);
+}
+
+
 int at_get_sms_unread(SMS_MSG_STAT_T* p_sms_msg_stat)
 {
 	if ((g_at_func_table.get_sms_unread == NULL) || (g_at_func_table.get_sms_unread == 0x00) )

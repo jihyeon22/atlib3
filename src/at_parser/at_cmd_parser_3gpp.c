@@ -524,3 +524,69 @@ int get_csq_3gpp(int *csq)
 	return AT_RET_SUCCESS;
 	
 }
+
+int set_apn_info_3gpp(int cid, int attr, char* apn)
+{
+	int cur_attr;
+	int need_to_setting = 1;
+	char cur_apn_addr[256] = {0,};
+
+	ATLOGT("<atd> 3gpp [%s] ++ \r\n",__func__);
+	if (get_apn_info_3gpp(cid, &cur_attr, cur_apn_addr) == AT_RET_SUCCESS)
+	{
+		need_to_setting = 0;
+		ATLOGT("<atd> 3gpp [%s] already cid exist! check apn [%d][%s]\r\n",__func__, cur_attr, cur_apn_addr);
+		if ( cur_attr != attr )
+			need_to_setting = 1;
+		if ( strcmp( cur_apn_addr, apn) != 0 )
+			need_to_setting = 1;
+	}
+
+	ATLOGT("<atd> 3gpp [%s] need to seting [%d]\r\n",__func__, need_to_setting);
+
+	if ( need_to_setting == 0 )
+		return AT_RET_SUCCESS;
+	else
+		return at_set_apn_form_cgdcont(cid, attr, apn);
+}
+
+int get_apn_info_3gpp(int cid, int* attr, char* apn)
+{
+	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
+	char tmp_chk_str[32] = {0,};
+
+	char* p_cmd = NULL;
+
+	int ip_attr = 0;
+	char apn_addr[128] = {0,};
+
+	ATLOGT("<atd> 3gpp [%s] ++ cid [%d]\r\n",__func__, cid);
+	memset(&result_buf, 0x00, AT_MAX_BUFF_SIZE);
+
+	if ( send_at_cmd_singleline_resp("AT+CGDCONT?", "+CGDCONT: ", result_buf, 5) != AT_RET_SUCCESS )
+	{
+		printf("<atd> tl500 [%s] send cmd fail\r\n",__func__);
+		return AT_RET_FAIL;
+	}
+
+    sprintf(tmp_chk_str, "+CGDCONT: %d,",cid);
+	p_cmd = strstr(result_buf, tmp_chk_str);
+
+    if ( p_cmd == NULL)
+    {
+        ATLOGI("<atd> [%s()] cid [%d] is not exist\r\n",__func__, cid);
+        return AT_RET_FAIL;
+    }
+
+	
+
+	if ( at_get_apn_form_cgdcont(p_cmd, &ip_attr, apn_addr) == AT_RET_SUCCESS ) 
+	{
+		*attr = ip_attr;
+		strcpy(apn, apn_addr);
+		return AT_RET_SUCCESS;
+	}
+	else
+		return AT_RET_FAIL;
+}
+

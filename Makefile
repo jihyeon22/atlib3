@@ -70,5 +70,6 @@ clean:
 	rm -vrf $(TARGET) $(LIB_OBJS) $(LIB_OBJS)
 	rm -vrf $(DESTDIR)$(LIB_PATH)/$(TARGET)
 	rm -vrf $(DESTDIR)$(INC_PATH)/at
+	rm -vrf at_sample
 	
 	
