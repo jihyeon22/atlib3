@@ -543,7 +543,22 @@ int at_get_csq(int* csq)
 	return g_at_func_table.get_csq(csq);
 }
 
-
+int at_get_modem_swver(char *buf, int buf_len)
+{	
+	if ((g_at_func_table.get_modem_swver == NULL) || (g_at_func_table.get_modem_swver == 0x00) )
+	{
+		ATLOGE("<atd> err [%s]: this cmd not support\r\n", __func__);
+		return AT_RET_CMD_NOT_SUPPORT;
+	}
+	
+	if ( buf == NULL ) 
+	{
+		ATLOGE("<atd> err [%s]: argument is not valid\r\n", __func__);
+		return AT_RET_FAIL;
+	}
+	
+	return g_at_func_table.get_modem_swver(buf, buf_len);
+}
 
 
 

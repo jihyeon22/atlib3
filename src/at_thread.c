@@ -150,9 +150,26 @@ void _at_loop(void* arg)
 			if( read_cnt <= 0) {
 				continue;
 			}
+			// 항상 noti 발생할때마다 항상 sms을 읽는것은 에러가 더욱많이발생
+			// sms 관련 noti 가 발생할때만 sms을 읽는다.
+			printf("---------------------------------------------------------------\r\n");
+			printf("---------------------------------------------------------------\r\n");
 			
-			check_sms_sendto_client();
-			check_notification_sendto_client(buffer);
+		
+
+			if ( ((strstr(buffer, "+CMTI:")) != NULL) || ((strstr(buffer, "+CMGR:")) != NULL) )
+			{
+				printf(" >> call sms noti [%s]\r\n", buffer);
+				check_sms_sendto_client();
+			}
+			else
+			{
+				printf(" >> call model [%s]\r\n", buffer);
+				check_notification_sendto_client(buffer);
+			}
+
+			printf("---------------------------------------------------------------\r\n");
+			printf("---------------------------------------------------------------\r\n");
 		}
 	}
 

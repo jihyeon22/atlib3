@@ -214,7 +214,7 @@ void main(int argc, char *argv[])
 			;
 		printf("get apn --> iptype : [%d] / apn_addr : [%s]\r\n", ip_type, apn_addr);
 	}
-*/
+
 	{
 		printf("--------------------------------------------------------------------------\r\n");
 		int ip_type = AT_APN_IP_TYPE_IPV4;
@@ -233,7 +233,25 @@ void main(int argc, char *argv[])
 			;
 		printf("get apn --> iptype : [%d] / apn_addr : [%s]\r\n", ip_type, apn_addr);
 	}
+*/
+	{
+		printf("--------------------------------------------------------------------------\r\n");
+		char swver[256] = {0,};
+		if ( at_get_modem_swver(swver,10) == AT_RET_SUCCESS )
+			;
+		printf("get modem swver --> swver : [%s] \r\n", swver);
+	}
+	
+	sleep(1);
 
+	{
+		printf("--------------------------------------------------------------------------\r\n");
+		char swver[256] = {0,};
+		if ( at_get_modem_swver(swver,20) == AT_RET_SUCCESS )
+			;
+		printf("get modem swver --> swver : [%s] \r\n", swver);
+	}
+	
 	while(1)
 	{
 		printf(".\r\n");

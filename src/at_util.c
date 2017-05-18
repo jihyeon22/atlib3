@@ -160,7 +160,7 @@ void at_read_flush()
 
 }
 
-
+//#define VERBOS_AT_CMD_DBG_MSG
 int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd, const int retry_cnt)
 {
 	int ret = AT_RET_FAIL;
@@ -210,12 +210,16 @@ int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd
 	}
 
 	// Ŀ��??? ����??
-	ATLOGD("%s> %s cmd\r\n", __func__, cmd);
+	ATLOGD("%s> send cmd :: [%s] \r\n", __func__, cmd);
 	sprintf(write_buf, "%s\r", cmd);
 
+#ifdef VERBOS_AT_CMD_DBG_MSG
 	ATLOGD("%s> at_strlen_with_cr call()\r\n", __func__);
+#endif
 	write_cnt1 = at_strlen_with_cr(write_buf);
+#ifdef VERBOS_AT_CMD_DBG_MSG
 	ATLOGD("%s> write_cnt1 = [%d]\r\n", __func__, write_cnt1);
+#endif
 	
 	write_cmd = 1;
 	
@@ -223,10 +227,11 @@ int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd
 	while(retry++ < retry_cnt) 
 	{
 		watchdog_keepalive_id("send_at_cmd_singleline_resp");
-
+#ifdef VERBOS_AT_CMD_DBG_MSG
 ATLOGD("%s> retry[%d/%d]\r\n", __func__, retry, retry_cnt);
 		// 1. Ŀ��??? ����??
 ATLOGD("%s> write_cmd[%d]\r\n", __func__, write_cmd);
+#endif
 		if ( write_cmd )
 		{
 			ATLOGD("<atd> dbg : > [%s] (%d)\r\n", write_buf, write_cnt1);
@@ -234,7 +239,9 @@ ATLOGD("%s> write_cmd[%d]\r\n", __func__, write_cmd);
 			write_cnt2 = write(fd, write_buf, write_cnt1);
 			memset(buffer, 0, sizeof(buffer));
 		}
+#ifdef VERBOS_AT_CMD_DBG_MSG
 ATLOGD("%s> write_cnt2[%d]\r\n", __func__, write_cnt2);		
+#endif
 		if ( write_cnt2 != write_cnt1 )
 		{
 			ATLOGD("<atd> dbg : write fail.. retry (%d),(%d)\r\n",write_cnt2,write_cnt1);
@@ -244,17 +251,21 @@ ATLOGD("%s> write_cnt2[%d]\r\n", __func__, write_cnt2);
 		write_cmd = 0;
 		
 		// 2. Ŀ��??����?k? �������ٸ�
+#ifdef VERBOS_AT_CMD_DBG_MSG
 ATLOGD("%s> _wait_read : read_total[%d]\r\n", __func__, read_total);				
+#endif
 		if( (read_cnt = _wait_read(fd, (unsigned char *)buffer+read_total, AT_MAX_BUFF_SIZE, AT_MAX_WAIT_READ_SEC)) < 0)
 		{
 			ATLOGD("<atd> dbg : read timeout fail.. retry\r\n");
 			continue;
 		}
+#ifdef VERBOS_AT_CMD_DBG_MSG
 ATLOGD("%s> _wait_read : read_cnt[%d]\r\n", __func__, read_cnt);				
-		
+#endif
 		read_total += read_cnt;
+#ifdef VERBOS_AT_CMD_DBG_MSG
 		ATLOGD("<atd> dbg : < [%s]\r\n",buffer);
-		
+#endif
 		// ���� ERROR ���� ???�l������break
 		p_chk_cmd = strstr(buffer, "\r\nERROR");
 		if (p_chk_cmd != NULL)

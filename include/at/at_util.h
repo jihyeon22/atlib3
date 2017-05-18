@@ -190,10 +190,23 @@ int at_get_adc_internal_batt(int* internal_batt_volt); // not support tl500 5x50
 
 int at_get_csq(int* csq);	// use test mode
 
+int at_get_modem_swver(char *buf, int buf_len);
+
 //jwrho ++
 int get_used_uart_channel_3gpp(int *uart_ch_code);
 int set_used_uart_channel_3gpp(UART_PORT_TYPE utype);
 //jwrho --
+
+#ifdef BOARD_TL500K // tl500k only support
+#define TELADIN_DMS_SETTING_TEST_MODE 	0
+#define TELADIN_DMS_SETTING_NONTEST_MODE 1
+
+int get_at_ktdevstat2_for_tl500k(char* buff);
+int get_at_ktdevstat_for_tl500k(char* buff);
+
+int set_modem_fota_testmode_for_tl500k(int mode);
+#endif
+
 #endif
 
 

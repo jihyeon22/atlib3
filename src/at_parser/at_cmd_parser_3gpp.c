@@ -23,6 +23,8 @@ int noti_proc_3gpp(const char* buffer, int len)
 	
 	int i = 0;
 	
+	ATLOGT("<atd> 3gpp (%s) - (%d) : noti [%s]\r\n",__func__,__LINE__, buffer);
+
 	// model sms proc
 	// CMTI 명령어가 오면, CMGR 명령어를 새로 보낸다. (sms 읽기 위해.)
 	if ((result_cmd = strstr(buffer, "+CMTI: \"ME\"")) != NULL)

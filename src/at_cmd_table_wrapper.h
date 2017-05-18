@@ -51,6 +51,8 @@ typedef struct AT_FUNC
 	int (*get_adc_internal_batt)(int* internal_batt_volt);
 
 	int (*get_csq)(int* csq);
+	
+	int (*get_modem_swver)(char* buf, int buf_len);
 }AT_FUNC_T;
 
 
