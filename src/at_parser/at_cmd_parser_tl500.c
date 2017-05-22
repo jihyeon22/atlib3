@@ -133,7 +133,7 @@ int get_swver_tl500(char* buf, int buf_len)
 	char swver_str_tmp[AT_MAX_BUFF_SIZE] ={0,};
 
 	int str_start_idx = 0;
-	int i = 0;
+//	int i = 0;
 
 	if (buf == NULL)
 		return AT_RET_FAIL;
@@ -205,7 +205,7 @@ int get_at_ktdevstat2_for_tl500k(char* buff)
     char *p_cmd = NULL;
 
 	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
-    char result_buf2[AT_MAX_BUFF_SIZE] ={0,};
+//    char result_buf2[AT_MAX_BUFF_SIZE] ={0,};
 
 	if (buff == NULL)
 		return AT_RET_FAIL;
@@ -232,9 +232,7 @@ int get_at_ktdevstat2_for_tl500k(char* buff)
 
 	return AT_RET_SUCCESS;
 }
-#endif
 
-#ifdef BOARD_TL500K
 //lte : KTDEVSTAT:{"QMV":"2.0.0", "RSSI":"-59", "Tx":"-2", "APN":"privatelte.ktfwing.com", "QoS":"00/0000", "BR":"0", "SRVS":"2", "SS":"NS", "CS":"NS", "FREQ":"10812", "RAT":"WCDMA", "D/N":"TL500K", "VER":"1.1.0", "IMEI":"352992033762503", "ICCID":"8982300814008521900F", "RSRP":"NS", "RSRQ":"NS", "RMNET":"NS", "SINR":"NS", "PCID":"NS"}
 //wcdma : KTDEVSTAT: "Modem_Qinfo":["1.1.8","-62","-67","-5","0","biz.ktfwing.com","64/3648","0","2","0","1","10836","HSDPA","210","NEO-W200K","0.0.5","356565040232595","8982300814008566236"]
 // <QMV>,<RSSI>,<RSCP>,<E/I>,<Tx>,<APN>,<QoS>,<BR>,<SRVC>,<SS>,<CS>,<FREQ>,<RAT>,<D/N>,<VER>,<IMEI>,<ICCID>,<RSRP>,<RSRQ>,<RMNET>
@@ -360,10 +358,38 @@ int get_at_ktdevstat_for_tl500k(char* buff)
 
 	return AT_RET_SUCCESS;
 }
-#endif
 
+int get_at_ktfota_ready_tl500k(int* result)
+{
+	// AT$$KFOTA_READY?
+	// $$KFOTA_READY: 0, 1
+	// OK
+	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
+	char number_buf[AT_MAX_BUFF_SIZE] ={0,};
 
-#ifdef BOARD_TL500K
+	char tmp_str[AT_MAX_BUFF_SIZE] ={0,};
+
+//	char* p_tmp = NULL;
+
+	if ( send_at_cmd_singleline_resp("AT$$KFOTA_READY?", "$$KFOTA_READY: ", result_buf, 5) != AT_RET_SUCCESS )
+	{
+		printf("<atd> tl500 [%s] send cmd fail\r\n",__func__);
+		return AT_RET_FAIL;
+	}
+
+	if ( strstr(result_buf,"$$KFOTA_READY: 0,") == NULL )
+		return AT_RET_FAIL;
+
+	strcpy(tmp_str, result_buf+strlen("$$KFOTA_READY: 0,"));
+
+	at_get_number(number_buf, tmp_str);
+
+	printf("<atd> kt fota ready :: [%s] !!! \r\n", number_buf);
+	*result = atoi(number_buf);
+
+	return AT_RET_SUCCESS;
+}
+
 int set_modem_fota_testmode_for_tl500k(int mode)
 {
 	if (mode == TELADIN_DMS_SETTING_TEST_MODE)

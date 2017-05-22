@@ -204,6 +204,8 @@ int set_used_uart_channel_3gpp(UART_PORT_TYPE utype);
 int get_at_ktdevstat2_for_tl500k(char* buff);
 int get_at_ktdevstat_for_tl500k(char* buff);
 
+int get_at_ktfota_ready_tl500k(int* result);
+
 int set_modem_fota_testmode_for_tl500k(int mode);
 #endif
 
