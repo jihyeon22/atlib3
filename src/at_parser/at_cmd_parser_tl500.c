@@ -140,13 +140,13 @@ int get_swver_tl500(char* buf, int buf_len)
 
 	if (strlen(saved_modem_ver_str) > 0)
 	{
-		int target_len = 0;
+		int target_len = strlen(saved_modem_ver_str);
 
-		if ( strlen(saved_modem_ver_str) > buf_len )
+		if ( target_len > buf_len )
 			target_len = buf_len;
 
 		strncpy(buf, saved_modem_ver_str, target_len);
-
+		printf("get_swver_tl500 ret-1 is [%s] \r\n", saved_modem_ver_str);
 		return AT_RET_SUCCESS;
 	}
 
@@ -190,6 +190,7 @@ int get_swver_tl500(char* buf, int buf_len)
 		strncpy(buf, saved_modem_ver_str, target_len);
 	}
 	
+	printf("get_swver_tl500 ret-2 is [%s] \r\n", saved_modem_ver_str);
 	return AT_RET_SUCCESS;
 }
 
