@@ -49,11 +49,16 @@ int noti_proc_3gpp(const char* buffer, int len)
 		
 		if (at_parse_sms_from_cmgr(result_cmd, phone_num, msg_time, msg) != AT_RET_SUCCESS)
 			return AT_RET_FAIL;
+
+		check_sms_sendto_client();
 		
 		if (g_model_proc_sms_read != NULL)
 		{
 			g_model_proc_sms_read(phone_num, msg_time, msg);
 		}
+
+	
+
 	}
 	else
 	{
