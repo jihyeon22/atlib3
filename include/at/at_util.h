@@ -197,6 +197,10 @@ int get_used_uart_channel_3gpp(int *uart_ch_code);
 int set_used_uart_channel_3gpp(UART_PORT_TYPE utype);
 //jwrho --
 
+int set_auto_ota_tl500(int mode);
+int get_auto_ota_tl500();
+
+
 #ifdef BOARD_TL500K // tl500k only support
 #define TELADIN_DMS_SETTING_TEST_MODE 	0
 #define TELADIN_DMS_SETTING_NONTEST_MODE 1
