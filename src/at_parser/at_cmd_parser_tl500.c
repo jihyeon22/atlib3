@@ -142,10 +142,10 @@ int set_auto_ota_tl500(int mode)
 {
 	// send_at_cmd_singleline_resp(send_cmd, ">", NULL, 3) != AT_RET_SUCCESS
 	//char send_cmd[AT_MAX_BUFF_SIZE] ={0,};
-	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
-	char number_buf[AT_MAX_BUFF_SIZE] ={0,};
+//	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
+//	char number_buf[AT_MAX_BUFF_SIZE] ={0,};
 	
-	char write_cmd[AT_MAX_BUFF_SIZE] = {0,};
+//	char write_cmd[AT_MAX_BUFF_SIZE] = {0,};
 
 	int current_ota_mode = get_auto_ota_tl500();
 
@@ -154,6 +154,49 @@ int set_auto_ota_tl500(int mode)
 	else
 		// return send_at_cmd("at$$auto_ota=0");
 
+	return AT_RET_SUCCESS;
+}
+
+
+int get_apps_port_tl500(int* port)
+{
+	// send_at_cmd_singleline_resp(send_cmd, ">", NULL, 3) != AT_RET_SUCCESS
+	//char send_cmd[AT_MAX_BUFF_SIZE] ={0,};
+	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
+	char number_buf[AT_MAX_BUFF_SIZE] ={0,};
+	
+	printf("<atd> tl500 [%s] start ??? \r\n",__func__);
+	
+	if ( send_at_cmd_singleline_resp("at$$apps_port?", "$$APPS_PORT: 0,", result_buf, 5) != AT_RET_SUCCESS )
+	{
+		printf("<atd> tl500 [%s] send cmd fail\r\n",__func__);
+		return AT_RET_FAIL;
+	}
+
+	at_get_number(number_buf, result_buf+strlen("$$APPS_PORT: 0,"));
+
+	printf("get apps port result is [%s] !!! \r\n", number_buf);
+	*port = atoi(number_buf);
+	return AT_RET_SUCCESS;
+}
+
+int set_apps_port_tl500(int port)
+{
+	// send_at_cmd_singleline_resp(send_cmd, ">", NULL, 3) != AT_RET_SUCCESS
+	//char send_cmd[AT_MAX_BUFF_SIZE] ={0,};
+	char cmd_buf[AT_MAX_BUFF_SIZE] ={0,};
+
+	int current_port = -1;
+	
+	if ( get_apps_port_tl500(&current_port) != AT_RET_SUCCESS )
+		return AT_RET_FAIL;
+	
+	if ( (current_port != port) )
+	{
+		sprintf(cmd_buf, "at$$apps_port=%d", port);
+		return send_at_cmd(cmd_buf);
+	}
+	
 	return AT_RET_SUCCESS;
 }
 

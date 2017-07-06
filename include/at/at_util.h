@@ -200,6 +200,10 @@ int set_used_uart_channel_3gpp(UART_PORT_TYPE utype);
 int set_auto_ota_tl500(int mode);
 int get_auto_ota_tl500();
 
+#define DS_PORT_TO_UART1	13
+#define DS_PORT_TO_NMEA		12
+int set_apps_port_tl500(int port);
+int get_apps_port_tl500(int* mode);
 
 #ifdef BOARD_TL500K // tl500k only support
 #define TELADIN_DMS_SETTING_TEST_MODE 	0
