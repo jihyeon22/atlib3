@@ -478,11 +478,20 @@ int set_qos_info_3gpp(int max_uplink, int max_downlink)
 	return AT_RET_SUCCESS;
 }
 
+int at_set_clear_all_sms()
+{
+    send_at_cmd("AT+CMGD=,4");
+	return AT_RET_SUCCESS;
+}
+
 int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat)
 {
 	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
 	
-	if ( send_at_cmd_singleline_resp("AT+CMGL=\"REC UNREAD\"", NULL, result_buf, 3) != AT_RET_SUCCESS )
+	// unread 로만 하면 간혹 노치는경우발생
+	// all 로 읽고 읽은데로 다 지운다.
+	//if ( send_at_cmd_singleline_resp("AT+CMGL=\"REC UNREAD\"", NULL, result_buf, 3) != AT_RET_SUCCESS )
+	if ( send_at_cmd_singleline_resp("AT+CMGL=\"ALL\"", NULL, result_buf, 3) != AT_RET_SUCCESS )
 	{
 		ATLOGE("<atd> 3gpp [%s] send CMGL cmd fail\r\n",__func__);;
 		return AT_RET_FAIL;
@@ -494,6 +503,8 @@ int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat)
 		return AT_RET_FAIL;
 	}
 	
+	at_set_clear_all_sms();
+
 	return AT_RET_SUCCESS;
 }
 	

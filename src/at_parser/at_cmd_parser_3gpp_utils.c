@@ -609,6 +609,10 @@ static int _cmgl_to_sms_msg_stat(const char* cmd, SMS_MSG_CONTENT_T* content)
     memset(buffer, 0x00, sizeof(buffer));
     strcpy(buffer, cmd);
     
+    // REC READ / UNREADN CHK
+    if ( ( strstr(buffer, "REC UNREAD") == NULL ) && ( strstr(buffer, "REC READ") == NULL ) )
+        return AT_RET_FAIL;
+    
     p_cmd = strstr(buffer, "+CMGL:");
     
     if ( p_cmd == NULL)
@@ -765,10 +769,12 @@ int at_get_unread_sms_from_cmgl(const char* cmd, SMS_MSG_STAT_T* p_sms_msg_stat)
 	char buffer2[AT_MAX_BUFF_SIZE] = {0,};
     //char tmp[AT_MAX_BUFF_SIZE] = {0,};
     
-	int total_unread_cnt = 0 ;
+	int total_cmgl_cnt = 0 ;
 	
 	int total_cmd_len = 0;
 	int msg_info[MAX_SMS_SAVE][1] = { 0, };
+
+    int sms_idx = 0;
 	
 	//first, data of 'CMGL' cut. next to copy again.
 	tmp_cmd = strstr(cmd, "+CMGL: ");
@@ -783,13 +789,13 @@ int at_get_unread_sms_from_cmgl(const char* cmd, SMS_MSG_STAT_T* p_sms_msg_stat)
 	//get information to parse all contents of CMGL.
     while ( (tmp_cmd = strstr(p_cmd, "+CMGL: ")) != NULL )
 	{
-		msg_info[total_unread_cnt][0] = total_cmd_len - strlen(tmp_cmd);
+		msg_info[total_cmgl_cnt][0] = total_cmd_len - strlen(tmp_cmd);
 		p_cmd = tmp_cmd;
 		p_cmd += strlen("+CMGL: ");
-		total_unread_cnt++;
+		total_cmgl_cnt++;
 	}
 	
-	for ( i = 0 ; i < total_unread_cnt ; i++ )
+	for ( i = 0 ; i < total_cmgl_cnt ; i++ )
 	{
 		int todo_copy_cnt = 0;
 		SMS_MSG_CONTENT_T sms_content;
@@ -803,14 +809,23 @@ int at_get_unread_sms_from_cmgl(const char* cmd, SMS_MSG_STAT_T* p_sms_msg_stat)
 			todo_copy_cnt = strlen(buffer + msg_info[i][0]);
 		
 		strncpy(buffer2, buffer + msg_info[i][0], todo_copy_cnt);
-		_cmgl_to_sms_msg_stat(buffer2, &sms_content);
-		
-		p_sms_msg_stat->total_unread_cnt = total_unread_cnt;
-		memcpy(&p_sms_msg_stat->msg[i], &sms_content, sizeof(SMS_MSG_CONTENT_T));
+
+		if ( _cmgl_to_sms_msg_stat(buffer2, &sms_content) == AT_RET_FAIL )
+        {
+            printf("cmgl parse fail...\r\n");
+            continue;
+        }
+
+		memcpy(&p_sms_msg_stat->msg[sms_idx], &sms_content, sizeof(SMS_MSG_CONTENT_T));
+        sms_idx++;
 		
 	}
-	
-	//printf(" total_unread_cnt is [%d]\r\n", total_unread_cnt);
+
+	p_sms_msg_stat->total_unread_cnt = sms_idx;
+
+	printf(" total_unread_cnt is [%d]\r\n", p_sms_msg_stat->total_unread_cnt);
 	
 	return AT_RET_SUCCESS;
 }
+
+

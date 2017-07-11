@@ -24,4 +24,6 @@ int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat);
 
 int get_csq_3gpp(int *csq);
 
+int at_set_clear_all_sms();
+
 #endif

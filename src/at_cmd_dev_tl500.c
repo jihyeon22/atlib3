@@ -79,7 +79,12 @@ int dev_table_init_tl500 (AT_FUNC_T* p_func_table)
 	send_at_cmd("ATE1");
 
 	ATLOGD("%s> at_read_flush() call\r\n", __func__);
+
+	// 기존의 저장값을 모두지운다.
+	// 그래야 cmgl="all"로 읽을때 기존값과 관계없이 읽을수있다.
+	at_set_clear_all_sms();
 	at_read_flush();
+	
 
 	ATLOGD("%s --\r\n", __func__);
 	return AT_RET_SUCCESS;
