@@ -140,21 +140,15 @@ int get_auto_ota_tl500()
 
 int set_auto_ota_tl500(int mode)
 {
-	// send_at_cmd_singleline_resp(send_cmd, ">", NULL, 3) != AT_RET_SUCCESS
-	//char send_cmd[AT_MAX_BUFF_SIZE] ={0,};
-//	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
-//	char number_buf[AT_MAX_BUFF_SIZE] ={0,};
-	
-//	char write_cmd[AT_MAX_BUFF_SIZE] = {0,};
-
+	char write_cmd[AT_MAX_BUFF_SIZE] = {0,};
 	int current_ota_mode = get_auto_ota_tl500();
+	
+	if ( current_ota_mode == mode )
+		return AT_RET_SUCCESS;
 
-	if ( (current_ota_mode != 1) && ( mode == 1 ) )
-		return send_at_cmd("at$$auto_ota=1");
-	else
-		// return send_at_cmd("at$$auto_ota=0");
+	sprintf(write_cmd, "at$$auto_ota=%d", mode);
 
-	return AT_RET_SUCCESS;
+	return send_at_cmd(write_cmd);
 }
 
 

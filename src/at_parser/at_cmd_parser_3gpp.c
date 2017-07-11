@@ -56,9 +56,6 @@ int noti_proc_3gpp(const char* buffer, int len)
 		{
 			g_model_proc_sms_read(phone_num, msg_time, msg);
 		}
-
-	
-
 	}
 	else
 	{
@@ -88,19 +85,30 @@ int get_phonenum_3gpp(char *pnumber, int buf_len)
 	}
 	
 	// 기존의 이미 데이터가 있는지 확인
-	if (strlen(phone_num) == 0)
+	// 기존의 데이터에 대해서 길이 체크 : 길이가 잘못되어있으면, 다시 읽어온다.
+	if (strlen(phone_num) < AT_LEN_PHONENUM )
 	{
 		if (send_at_cmd_singleline_resp("AT+CNUM", "+CNUM: ", ret_buff, 3) != AT_RET_SUCCESS)
 		{
 			memset(phone_num, 0x00, sizeof(phone_num));
+			ATLOGE("<atd> 3gpp [%s] CNUM command fail - 1\r\n",__func__);
 			return AT_RET_FAIL;
 		}
 
 		if ( at_get_phonenum_cnum(ret_buff, phone_num) != AT_RET_SUCCESS)
 		{
 			memset(phone_num, 0x00, sizeof(phone_num));
+			ATLOGE("<atd> 3gpp [%s] CNUM command fail - 2\r\n",__func__);
 			return AT_RET_FAIL;
 		}
+	}
+	
+	// 읽어온 데이터에 대해서 유효성 다시 체크
+	if (strlen(phone_num) < AT_LEN_PHONENUM )
+	{
+		memset(phone_num, 0x00, sizeof(phone_num));
+		ATLOGE("<atd> 3gpp [%s] CNUM command fail - 3\r\n",__func__);
+		return AT_RET_FAIL;
 	}
 	
 	ATLOGT("<atd> 3gpp [%s] : phone num [%s]\r\n",__func__, phone_num);
@@ -129,14 +137,24 @@ int get_imei_3gpp(char *imei, int buf_len)
 		return AT_RET_FUNC_DATA_INIT;
 	}
 	
-	if (strlen(phone_imei) == 0)
+	// 기존의 이미 데이터가 있는지 확인
+	// 기존의 데이터에 대해서 길이 체크 : 길이가 잘못되어있으면, 다시 읽어온다.
+	if (strlen(phone_imei) < AT_LEN_IMEI )
 	{
 		if ( send_at_cmd_numeric("AT+GSN", phone_imei, 4) != AT_RET_SUCCESS )
 		{
 			memset(phone_imei, 0x00, sizeof(phone_imei));
-			ATLOGE("<atd> 3gpp [%s] GSN command fail\r\n",__func__);
+			ATLOGE("<atd> 3gpp [%s] GSN command fail - 1 \r\n",__func__);
 			return AT_RET_FAIL;
 		}
+	}
+	
+	// 읽어온 데이터에 대해서 유효성 다시 체크
+	if (strlen(phone_imei) < AT_LEN_IMEI )
+	{
+		memset(phone_imei, 0x00, sizeof(phone_imei));
+		ATLOGE("<atd> 3gpp [%s] GSN command fail - 2\r\n",__func__);
+		return AT_RET_FAIL;
 	}
 	
 	if ( ( imei == NULL ) || (buf_len < (int)strlen(phone_imei)) )
