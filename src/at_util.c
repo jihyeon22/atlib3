@@ -263,9 +263,9 @@ ATLOGD("%s> _wait_read : read_total[%d]\r\n", __func__, read_total);
 ATLOGD("%s> _wait_read : read_cnt[%d]\r\n", __func__, read_cnt);				
 #endif
 		read_total += read_cnt;
-#ifdef VERBOS_AT_CMD_DBG_MSG
+
 		ATLOGD("<atd> dbg : < [%s]\r\n",buffer);
-#endif
+
 		// ���� ERROR ���� ???�l������break
 		p_chk_cmd = strstr(buffer, "\r\nERROR");
 		if (p_chk_cmd != NULL)

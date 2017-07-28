@@ -185,6 +185,9 @@ int at_get_apn_addr(int cid, int* attr, char* apn);
 
 int at_get_sms_unread(SMS_MSG_STAT_T* p_sms_msg_stat);
 
+int at_chk_read_sms(); // sms read and noti to model sms!
+int at_chk_read_noti(char* buffer);
+
 int at_get_adc_main_pwr(int* main_pwr_volt);	// suport only tl500
 int at_get_adc_internal_batt(int* internal_batt_volt); // not support tl500 5x500
 

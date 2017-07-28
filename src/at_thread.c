@@ -32,6 +32,7 @@ void _at_noti_proc(char* buffer, int len)
 }
 */
 
+
 void check_sms_sendto_client()
 {
 	SOC_IPC_DATA_T msg;
@@ -51,6 +52,7 @@ void check_sms_sendto_client()
 		strncpy(msg.recv_time, sms_mgs_stat.msg[i].time_stamp, sizeof(msg.recv_time)-1);
 		strncpy(msg.data, sms_mgs_stat.msg[i].msg_buff, sizeof(msg.data)-1);
 		send_smd_data_broadcast(msg);
+		sleep(2); // 일단 sms thread 에서 처리할 시간을 준다.
 	}
 
 
@@ -73,6 +75,19 @@ void check_notification_sendto_client(char *buffer)
 	strncpy(msg.data, buffer, sizeof(msg.data)-1);
 	send_smd_data_broadcast(msg);
 }
+
+// export func.
+int at_chk_read_sms()
+{
+	check_sms_sendto_client();
+}
+
+// export func.
+int at_chk_read_noti(char* buffer)
+{
+	check_notification_sendto_client(buffer);
+}
+
 
 void _at_loop(void* arg)
 {

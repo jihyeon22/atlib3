@@ -514,6 +514,9 @@ int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat)
 		ATLOGE("<atd> 3gpp [%s] send CMGL cmd fail\r\n",__func__);;
 		return AT_RET_FAIL;
 	}
+
+	// 읽은다음 바로 지운다.
+	at_set_clear_all_sms();
 	
 	if ( at_get_unread_sms_from_cmgl(result_buf, p_sms_msg_stat) != AT_RET_SUCCESS )
 	{
@@ -521,7 +524,6 @@ int get_sms_unread_3gpp(SMS_MSG_STAT_T* p_sms_msg_stat)
 		return AT_RET_FAIL;
 	}
 	
-	at_set_clear_all_sms();
 
 	return AT_RET_SUCCESS;
 }
