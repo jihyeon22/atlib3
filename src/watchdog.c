@@ -10,6 +10,7 @@
 #include "at/at_log.h"
 #include "at/watchdog.h"
 
+#include <mdsapi/mds_api.h>
 
 #define MAX_WATCHDOG_COUNT		30
 #define MAX_WATCHDOG_ID_LENGTH	128
@@ -53,11 +54,16 @@ void _watchdog_loop(void* arg)
 				int power_off_cnt = 0;
 				while(1) {
 					ATLOGD("[%s] ID watchdog occured!!! power_off_cnt[%d]\n", g_watchdog_mng.data[i].id, power_off_cnt);
+					// board api
+					mds_api_poweroff();
+					sleep(1);
+					/*
 					system("poweroff &");
 					sleep(1);
 					if(power_off_cnt++ > 10) {
 						system("echo c > /proc/sysrq-trigger");
 					}
+					*/
 				}//*/
 
 				ATLOGD("[%s] ID watchdog occured!!!\n", g_watchdog_mng.data[i].id);

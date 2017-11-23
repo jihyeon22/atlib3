@@ -46,7 +46,7 @@ LIB_INCS = -Iinclude -Isrc -Isrc/at_parser
 TEST_SRCS = testapp/at_test.c
 TEST_OBJS = $(TEST_SRCS:.c=.o)
 
-TEST_LIBS += -lat3 -lpthread -llogd
+TEST_LIBS += -lat3 -lpthread -llogd -lmdsapi
 
 
 #all: all-before libs $(BIN) samples all-after
