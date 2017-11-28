@@ -345,8 +345,8 @@ int at_get_csq_from_csq(const char* cmd, int* csq)
 }
 
 
-// +CREG: 0,1
-int at_get_netstat_from_creg(const char* cmd, int* netstat)
+// +CGREG: 0,1
+int at_get_netstat_from_cgreg(const char* cmd, int* netstat)
 {
     char *tr;
     char token_0[ ] = ",";
@@ -360,7 +360,7 @@ int at_get_netstat_from_creg(const char* cmd, int* netstat)
     memset(buffer, 0x00, sizeof(buffer));
     strcpy(buffer, cmd);
     
-    p_cmd = strstr(buffer, "+CREG:");
+    p_cmd = strstr(buffer, "+CGREG:");
     
     if ( p_cmd == NULL)
         return AT_RET_FAIL;

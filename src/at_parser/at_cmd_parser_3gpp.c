@@ -243,13 +243,13 @@ int get_netstat_3gpp(AT_RET_NET_STAT *stat)
 	int netstat = 0;
 	ATLOGT("<atd> 3gpp [%s] start\r\n",__func__);
 	
-	if ( send_at_cmd_singleline_resp("AT+CREG?", "+CREG:", result_buf, 3) != AT_RET_SUCCESS )
+	if ( send_at_cmd_singleline_resp("AT+CGREG?", "+CGREG:", result_buf, 3) != AT_RET_SUCCESS )
 	{
-		ATLOGE("<atd> 3gpp [%s] send CREG fail\r\n");
+		ATLOGE("<atd> 3gpp [%s] send CGREG fail\r\n");
 		return AT_RET_FAIL;
 	}
 	
-	if ( at_get_netstat_from_creg(result_buf, &netstat) != AT_RET_SUCCESS )
+	if ( at_get_netstat_from_cgreg(result_buf, &netstat) != AT_RET_SUCCESS )
 	{
 		ATLOGE("<atd> 3gpp [%s] netstat get fail\r\n");
 		return AT_RET_FAIL;
