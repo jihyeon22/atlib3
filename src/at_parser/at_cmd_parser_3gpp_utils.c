@@ -350,7 +350,7 @@ int at_get_netstat_from_cgreg(const char* cmd, int* netstat)
 {
     char *tr;
     char token_0[ ] = ",";
-    char token_1[ ] = "\r\n";
+    char token_1[ ] = ",\r\n";
     char *temp_bp = NULL;
     
     char *p_cmd = NULL;
