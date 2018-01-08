@@ -164,7 +164,7 @@ int at_get_netstat(AT_RET_NET_STAT* netstat)
 	return g_at_func_table.get_netstat(netstat);
 } 
 
-int at_get_dbgmsg(unsigned char* result_buff, const int buff_size)
+int at_get_dbgmsg(char* result_buff, const int buff_size)
 {
 	if ((g_at_func_table.get_dbgmsg == NULL) || (g_at_func_table.get_dbgmsg == 0x00) )
 	{

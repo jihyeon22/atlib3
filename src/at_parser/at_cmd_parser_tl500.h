@@ -9,6 +9,7 @@ int get_gps_ant_tl500(char *ant, int buf_len);
 int get_adc_main_pwr_tl500(int* main_pwr_volt);
 
 int get_swver_tl500(char* buf, int buf_len);
+int get_dbgmsg_tl500(char* buff, const int buff_size);
 
 
 #endif

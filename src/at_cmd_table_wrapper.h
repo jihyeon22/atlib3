@@ -20,7 +20,7 @@ typedef struct AT_FUNC
 	// modem status
 	int (*get_rssi)(int *rssi);
 	int (*get_netstat)(AT_RET_NET_STAT* stat);
-	int (*get_dbgmsg)(unsigned char* result_buff, const int buff_size);
+	int (*get_dbgmsg)(char* result_buff, const int buff_size);
 	int (*get_modemtime)(time_t *out, int flag);
 	
 	// gps function

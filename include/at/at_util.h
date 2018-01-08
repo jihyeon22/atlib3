@@ -156,7 +156,7 @@ int at_get_imei(char *imei, int buf_len);
 int at_send_sms(const char* dest, const char* msg);
 int at_get_rssi(int* rssi);
 int at_get_netstat(AT_RET_NET_STAT* stat);
-int at_get_dbgmsg(unsigned char* result_buff, const int buff_size);
+int at_get_dbgmsg(char* result_buff, const int buff_size);
 int at_get_modemtime(time_t *out, int flag);
 
 int at_get_gps_ant(char *ant, int buf_len);

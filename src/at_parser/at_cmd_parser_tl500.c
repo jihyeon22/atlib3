@@ -272,6 +272,34 @@ int get_swver_tl500(char* buf, int buf_len)
 	return AT_RET_SUCCESS;
 }
 
+
+int get_dbgmsg_tl500(char* buff, const int buff_size)
+{
+	// send_at_cmd_singleline_resp(send_cmd, ">", NULL, 3) != AT_RET_SUCCESS
+	//char send_cmd[AT_MAX_BUFF_SIZE] ={0,};
+	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
+	char number_buf[AT_MAX_BUFF_SIZE] ={0,};
+	
+    int ret_len = 0;
+
+	printf("<atd> tl500 [%s] start ??? \r\n",__func__);
+	
+	if ( send_at_cmd_singleline_resp("at$$dscreen?", "$$DBG:", result_buf, 5) != AT_RET_SUCCESS )
+	{
+		printf("<atd> tl500 [%s] send cmd fail\r\n",__func__);
+		return AT_RET_FAIL;
+	}
+
+    ret_len = strlen(result_buf);
+
+    if ( ret_len > buff_size)
+        return AT_RET_FAIL;
+
+    strcpy(buff, result_buf);
+	return AT_RET_SUCCESS;
+}
+
+
 #ifdef BOARD_TL500K
 //lte : KTDEVSTAT:{"QMV":"2.0.0", "RSSI":"-59", "Tx":"-2", "APN":"privatelte.ktfwing.com", "QoS":"00/0000", "BR":"0", "SRVS":"2", "SS":"NS", "CS":"NS", "FREQ":"10812", "RAT":"WCDMA", "D/N":"TL500K", "VER":"1.1.0", "IMEI":"352992033762503", "ICCID":"8982300814008521900F", "RSRP":"NS", "RSRQ":"NS", "RMNET":"NS", "SINR":"NS", "PCID":"NS"}
 //wcdma : KTDEVSTAT: "Modem_Qinfo":["1.1.8","-62","-67","-5","0","biz.ktfwing.com","64/3648","0","2","0","1","10836","HSDPA","210","NEO-W200K","0.0.5","356565040232595","8982300814008566236"]

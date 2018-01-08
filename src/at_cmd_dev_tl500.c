@@ -74,6 +74,8 @@ int dev_table_init_tl500 (AT_FUNC_T* p_func_table)
 	p_func_table->get_csq = get_csq_3gpp;
 	
 	p_func_table->get_modem_swver = get_swver_tl500;
+
+    p_func_table->get_dbgmsg = get_dbgmsg_tl500;
 	
 	ATLOGD("%s> send_at_cmd() call\r\n", __func__);
 	send_at_cmd("ATE1");
