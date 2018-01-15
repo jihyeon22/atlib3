@@ -510,3 +510,18 @@ int set_modem_fota_testmode_for_tl500k(int mode)
 }
 #endif
 
+
+
+#ifdef BOARD_TL500S
+int set_modem_lte_band_for_tl500s(int mode)
+{
+    char cmd_str[AT_MAX_BUFF_SIZE] ={0,};
+    sprintf(cmd_str, "AT$$LTEBAND=%d", mode);
+
+    send_at_cmd("AT$$SPC=000000");
+    send_at_cmd(cmd_str);
+    send_at_cmd("AT$$LTE_BANDPREF=0");
+
+    return AT_RET_SUCCESS;
+}
+#endif

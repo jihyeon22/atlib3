@@ -12,4 +12,6 @@ int get_swver_tl500(char* buf, int buf_len);
 int get_dbgmsg_tl500(char* buff, const int buff_size);
 
 
+
+
 #endif

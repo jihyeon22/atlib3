@@ -220,6 +220,10 @@ int get_at_ktfota_ready_tl500k(int* result);
 int set_modem_fota_testmode_for_tl500k(int mode);
 #endif
 
+#ifdef BOARD_TL500S
+int set_modem_lte_band_for_tl500s(int mode);
+#endif
+
 #endif
 
 
