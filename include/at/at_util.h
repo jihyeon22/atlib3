@@ -222,8 +222,9 @@ int set_modem_fota_testmode_for_tl500k(int mode);
 
 #ifdef BOARD_TL500S
 int set_modem_lte_band_for_tl500s(int mode);
-int get_adc_main_pwr2_tl500(int* main_pwr_volt);
 #endif
+
+int get_adc_main_pwr2_tl500(int* main_pwr_volt);
 
 #endif
 
