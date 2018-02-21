@@ -117,6 +117,37 @@ int get_adc_main_pwr_tl500(int* main_pwr_volt)
 	return AT_RET_SUCCESS;
 }
 
+int get_adc_main_pwr2_tl500(int* main_pwr_volt)
+{
+	// send_at_cmd_singleline_resp(send_cmd, ">", NULL, 3) != AT_RET_SUCCESS
+	//char send_cmd[AT_MAX_BUFF_SIZE] ={0,};
+	char result_buf[AT_MAX_BUFF_SIZE] ={0,};
+	char number_buf[AT_MAX_BUFF_SIZE] ={0,};
+
+	int tmp_main_pwr_volt = 0;
+    char* result_buf_p = NULL;
+
+	printf("<atd> tl500 [%s] start ??? \r\n",__func__);
+	
+	if ( send_at_cmd_singleline_resp("AT$$CAR_BATT2?", "$$CAR_BATT2: ", result_buf, 5) != AT_RET_SUCCESS )
+	{
+		printf("<atd> tl500 [%s] send cmd fail\r\n",__func__);
+        if ( get_adc_main_pwr_tl500(&tmp_main_pwr_volt) == AT_RET_FAIL )
+            return AT_RET_FAIL;
+
+        *main_pwr_volt = tmp_main_pwr_volt*10;
+        return AT_RET_SUCCESS;
+	}
+
+    result_buf_p = result_buf + strlen("$$CAR_BATT2: ");
+
+	at_get_number(number_buf, result_buf_p);
+
+	printf("get adc2 result is [%s] !!! \r\n", number_buf);
+	*main_pwr_volt = atoi(number_buf);
+	return AT_RET_SUCCESS;
+}
+
 int get_auto_ota_tl500()
 {
 	// send_at_cmd_singleline_resp(send_cmd, ">", NULL, 3) != AT_RET_SUCCESS
