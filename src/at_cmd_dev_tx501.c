@@ -12,6 +12,9 @@
 
 #include "at_cmd_table_wrapper.h"
 #include "at_cmd_parser_3gpp.h"
+#include "at_cmd_parser_tl500.h"
+
+
 
 
 // function init
@@ -53,15 +56,26 @@ int dev_table_init_tx501 (AT_FUNC_T* p_func_table)
 	p_func_table->set_3g_qulify_profile = set_3g_qulify_profile_3gpp;
 	
 	p_func_table->get_sms_unread = get_sms_unread_3gpp;
-	
+
+	p_func_table->set_apn_addr = set_apn_info_3gpp;
+	p_func_table->get_apn_addr = get_apn_info_3gpp;
 
 	// init cmd..
 //	send_at_cmd("AT+CNMI=2,1,0,0,0");
 //	send_at_cmd("AT+CMGF=1");
 //	send_at_cmd("AT$$SPC=000000");
 
+	p_func_table->get_csq = get_csq_3gpp;
+	
+	p_func_table->get_modem_swver = get_swver_tl500;
+
+    p_func_table->get_dbgmsg = get_dbgmsg_tl500;
+	
 	ATLOGD("%s> send_at_cmd() call\r\n", __func__);
 	send_at_cmd("ATE1");
+
+    // uart 1/2 both use..
+    send_at_cmd("AT$$apps_port=12");
 
 	ATLOGD("%s> at_read_flush() call\r\n", __func__);
 	at_set_clear_all_sms();
