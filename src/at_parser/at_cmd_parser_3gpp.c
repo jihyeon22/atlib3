@@ -166,6 +166,8 @@ int get_imei_3gpp(char *imei, int buf_len)
 	strcpy(imei, phone_imei);
 	ATLOGT("<atd> 3gpp [%s] : imei [%s]\r\n",__func__, phone_imei);
 	
+	at_send_initsms();
+	
 	return AT_RET_SUCCESS;
 	
 	

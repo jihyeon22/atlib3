@@ -160,6 +160,69 @@ void at_read_flush()
 
 }
 
+static int g_at_send_initsms = 0;
+#define CTRL_Z_CHAR  '\x1A'  
+int at_send_initsms()
+{
+	unsigned char cmd_buf[32];
+
+	if(g_at_send_initsms == 0)
+	{
+		_at_resetcmd("AT+CMGF=1\r");
+		_at_resetcmd("AT+CMGS=\"114\"\r");
+
+		sprintf((char *)cmd_buf, "%c", CTRL_Z_CHAR);
+		_at_resetcmd((const char*)cmd_buf);	
+
+	}
+	else
+	{
+		printf("at_send_initsms true \n"); 
+	}
+	
+	return 0;
+}
+int _at_resetcmd(const char* cmd)
+{
+	int fd = 0;
+	int ret = 0;
+	char buffer[AT_MAX_BUFF_SIZE] = {0,};
+	
+	
+	fd = open(g_dev_path, O_RDWR | O_NOCTTY | O_NONBLOCK);// | O_NONBLOCK);
+	if(fd <= 0) {
+		printf("at dev open fail\n");
+		return -1;
+	}
+
+	if(write(fd, cmd, strlen(cmd)) <= 0) {
+		printf("at dev write fail : %d\n", ret);
+		return -1;
+	}
+	
+	memset(buffer, 0x00, sizeof(buffer));
+
+	int ret_byte = 0;
+	while (1) {
+		memset(buffer, 0x00, sizeof(buffer));
+		if ( (ret_byte = read(fd, buffer, AT_MAX_BUFF_SIZE)) <= 0)
+			return -1;
+		if(strcmp(buffer, "305") != 0)
+		{
+			g_at_send_initsms = 1;
+			printf("CMS ERROR: 305 \n");
+			ATLOGT("CMS ERROR: 305 \r\n"); 
+		
+		}
+		
+		printf("%s\n", buffer);
+		break; //success
+	}
+
+	close(fd);
+	
+	return 0;
+}
 //#define VERBOS_AT_CMD_DBG_MSG
 int send_at_cmd_singleline_resp(const char* cmd, const char* resp, char* ret_cmd, const int retry_cnt)
 {

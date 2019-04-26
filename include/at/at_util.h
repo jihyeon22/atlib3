@@ -226,6 +226,8 @@ int set_modem_lte_band_for_tl500s(int mode);
 
 int get_adc_main_pwr2_tl500(int* main_pwr_volt);
 
+int at_reset_sms();
+
 #endif
 
 
