@@ -144,6 +144,7 @@ int send_at_cmd_numeric(const char* cmd, char* ret_cmd, const int retry_cnt);
 int at_open(AT_DEV_TYPE dev, void (*p_noti_proc)(const char* buffer, int len),  void (*p_sms_proc)(const char* phone_num, const char* recv_time, const char* msg), char *debug_file );
 int at_close();
 void at_read_flush();
+int at_send_initsms(char *num);
 
 //at main listener : **caution** general app dont use this function.
 void at_listener_open();

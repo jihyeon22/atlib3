@@ -162,14 +162,18 @@ void at_read_flush()
 
 static int g_at_send_initsms = 0;
 #define CTRL_Z_CHAR  '\x1A'  
-int at_send_initsms()
+int at_send_initsms(char *num)
 {
 	unsigned char cmd_buf[32];
+	unsigned char buf[32];
 
 	if(g_at_send_initsms == 0)
 	{
 		_at_resetcmd("AT+CMGF=1\r");
-		_at_resetcmd("AT+CMGS=\"114\"\r");
+
+		sprintf(buf,"AT+CMGS=\"%s\"\r",num);
+		_at_resetcmd(buf);
+		//_at_resetcmd("AT+CMGS=\"114\"\r");
 
 		sprintf((char *)cmd_buf, "%c", CTRL_Z_CHAR);
 		_at_resetcmd((const char*)cmd_buf);	
